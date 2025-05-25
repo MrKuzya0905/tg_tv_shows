@@ -1,16 +1,18 @@
 from aiogram import Router
 from aiogram.types import Message, CallbackQuery, URLInputFile, ReplyKeyboardRemove
+from aiogram.fsm.context import FSMContext
 
 import data
-from commands import SHOWS_COMMAND
+from commands import SHOWS_COMMAND, ADD_SHOW_COMMAND
 from keyboards import tv_shows_keyboard_markup, TVShowsCallback
 from models import TVShowModel
+from forms import ShowForm
 
 
 shows_router = Router()
 
 
-@shows_router(SHOWS_COMMAND)
+@shows_router.message(SHOWS_COMMAND)
 async def get_shows(message: Message):
     shows = data.get_shows()
     keyboard = tv_shows_keyboard_markup(shows)
@@ -19,9 +21,10 @@ async def get_shows(message: Message):
         reply_markup=keyboard
     )
 
+
 @shows_router.callback_query(TVShowsCallback.filter())
 async def get_show(callback: CallbackQuery, callback_data: TVShowsCallback):
-    show_data = data.get_shows(callback_data.id)
+    show_data = data.get_shows(show_id=callback_data.id)
     show = TVShowModel(**show_data)
     text = f"""
     Show: {show.name}
@@ -36,5 +39,65 @@ async def get_show(callback: CallbackQuery, callback_data: TVShowsCallback):
             url=show.poster,
             filename=show.name
         ),
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+
+@shows_router.message(ADD_SHOW_COMMAND)
+async def add_show(message: Message, state: FSMContext):
+    await state.set_state(ShowForm.name)
+    await message.answer(
+        text="Please enter the name of the show:",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+
+@shows_router.message(ShowForm.name)
+async def get_show_name(message: Message, state: FSMContext):
+    await state.update_data(name=message.text)
+    await state.set_state(ShowForm.description)
+    await message.answer(
+        text="Please enter the description of the show:",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+
+@shows_router.message(ShowForm.description)
+async def get_show_description(message: Message, state: FSMContext):
+    await state.update_data(description=message.text)
+    await state.set_state(ShowForm.rating)
+    await message.answer(
+        text="Please enter the rating of the show(imdb):",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+
+@shows_router.message(ShowForm.rating)
+async def get_show_rating(message: Message, state: FSMContext):
+    await state.update_data(rating=float(message.text))
+    await state.set_state(ShowForm.genre)
+    await message.answer(
+        text="Please enter the genre of the show:",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+
+@shows_router.message(ShowForm.genre)
+async def get_show_genre(message: Message, state: FSMContext):
+    await state.update_data(genre=message.text)
+    await state.set_state(ShowForm.actors)
+    await message.answer(
+        text="Please enter the actors of the show (comma separated):",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+
+@shows_router.message(ShowForm.actors)
+async def get_show_actors(message: Message, state: FSMContext):
+    actors = [actor.strip() for actor in message.text.split(",")]
+    await state.update_data(actors=actors)
+    await state.set_state(ShowForm.poster)
+    await message.answer(
+        text="Please send the poster of the show:",
         reply_markup=ReplyKeyboardRemove()
     )
