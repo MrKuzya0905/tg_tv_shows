@@ -1,10 +1,10 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, URLInputFile, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 
 import data
 from commands import SHOWS_COMMAND, ADD_SHOW_COMMAND
-from keyboards import tv_shows_keyboard_markup, TVShowsCallback
+from keyboards import tv_shows_keyboard_markup, TVShowsCallback, del_tv_show_keyboard
 from models import TVShowModel
 from forms import ShowForm
 
@@ -39,7 +39,7 @@ async def get_show(callback: CallbackQuery, callback_data: TVShowsCallback):
             url=show.poster,
             filename=show.name
         ),
-        reply_markup=ReplyKeyboardRemove()
+        reply_markup=del_tv_show_keyboard(callback_data.id)
     )
 
 
@@ -98,6 +98,26 @@ async def get_show_actors(message: Message, state: FSMContext):
     await state.update_data(actors=actors)
     await state.set_state(ShowForm.poster)
     await message.answer(
-        text="Please send the poster of the show:",
+        text="Please send url of the poster of the show:",
         reply_markup=ReplyKeyboardRemove()
     )
+
+@shows_router.message(ShowForm.poster)
+async def get_show_poster(message: Message, state: FSMContext):
+    show_data = await state.update_data(poster=message.text)
+    data.add_show(show_data)
+    await state.clear()
+    await message.answer(
+        text=f"Show '{show_data["name"]}'added successfully!",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+@shows_router.callback_query(F.data.startswith("del_show_"))
+async def del_show(callback: CallbackQuery, state: FSMContext):
+    show_id = int(callback.data.split("_")[-1])
+    show = data.get_shows(show_id=show_id)
+    data.delete_show(show_id)
+    await callback.message.answer(
+        text=f"Show '{show.get("name")}' deleted successfully!"
+    )
+    
