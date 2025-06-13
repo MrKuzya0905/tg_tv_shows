@@ -6,6 +6,13 @@ class TVShowsCallback(CallbackData, prefix="tv_shows", sep=";"):
     name: str
 
 def tv_shows_keyboard_markup(shows: list):
+    """
+    Description of tv_shows_keyboard_markup
+
+    Args:
+        shows (list):
+
+    """
     builder = InlineKeyboardBuilder()
     for index, show in enumerate(shows):
         callback_data = TVShowsCallback(id=index, **show)
@@ -18,6 +25,13 @@ def tv_shows_keyboard_markup(shows: list):
     return builder.as_markup()
 
 def del_tv_show_keyboard(show_id: int):
+    """
+    Description of del_tv_show_keyboard
+
+    Args:
+        show_id (int):
+
+    """
     builder = InlineKeyboardBuilder()
     builder.button(
         text="Delete Show",

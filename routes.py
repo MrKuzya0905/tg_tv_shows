@@ -45,6 +45,14 @@ async def get_show(callback: CallbackQuery, callback_data: TVShowsCallback):
 
 @shows_router.message(ADD_SHOW_COMMAND)
 async def add_show(message: Message, state: FSMContext):
+    """
+    Description of add_show
+
+    Args:
+        message (Message):
+        state (FSMContext):
+
+    """
     await state.set_state(ShowForm.name)
     await message.answer(
         text="Please enter the name of the show:",
@@ -54,6 +62,14 @@ async def add_show(message: Message, state: FSMContext):
 
 @shows_router.message(ShowForm.name)
 async def get_show_name(message: Message, state: FSMContext):
+    """
+    Description of get_show_name
+
+    Args:
+        message (Message):
+        state (FSMContext):
+
+    """
     await state.update_data(name=message.text)
     await state.set_state(ShowForm.description)
     await message.answer(
@@ -64,6 +80,14 @@ async def get_show_name(message: Message, state: FSMContext):
 
 @shows_router.message(ShowForm.description)
 async def get_show_description(message: Message, state: FSMContext):
+    """
+    Description of get_show_description
+
+    Args:
+        message (Message):
+        state (FSMContext):
+
+    """
     await state.update_data(description=message.text)
     await state.set_state(ShowForm.rating)
     await message.answer(

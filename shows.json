@@ -29,5 +29,43 @@
       "Kenneth Welsh"
     ],
     "poster": "https://m.media-amazon.com/images/I/51Zj9dLxLTL._SX342_SY445_.jpg"
+  },
+  {
+    "name": "Mr. Robot",
+    "description": "Elliot is a young programmer who works as a cybersecurity engineer by day and a vengeful hacker by night . Elliot finds himself at a crossroads when the mysterious leader of an underground hacker group recruits him to take down the corporation that hired him to protect it. Due to personal beliefs, Elliot is not sure he wants to put the heads of the international conglomerates he believes are running the world and destroying it.",
+    "rating": 8.5,
+    "genre": "psychological drama",
+    "actors": [
+      "Rami Malek",
+      "Carly Chaykin",
+      "Portia Doubleday",
+      "Martin Wallström",
+      "Christian Slater",
+      "Michael Christopher"
+    ],
+    "poster": "http://www.impawards.com/tv/posters/mr_robot_ver5_xlg.jpg"
+  },
+  {
+    "name": "Lost",
+    "description": "A plane flying from Sydney  to Los Angeles crashes. 48 passengers miraculously escape death and end up on an island lost in the ocean . The chances of finding them are slim to none. To survive in the wilderness, the heroes, who are very different people - a doctor, a criminal, a rock musician, an Iraqi military officer - must rely only on themselves. They will have to learn to live in peace with each other, otherwise sooner or later they will all die. The matter is complicated by the fact that the island seems to hide deadly secrets that the heroes are trying to unravel.",
+    "rating": 8.3,
+    "genre": "mystery",
+    "actors": [
+      "Matthew Fox",
+      "Evangeline Lilly",
+      "Terry O'Quinn",
+      "Josh Holloway",
+      "Emelie DeRavin",
+      "Nevin Andrews",
+      "Elizabeth Mitchell",
+      "Michelle Rodriguez",
+      "Jorge Garcia Maggie\nGrace",
+      "Yunjin Kim",
+      "Daniel De Kim",
+      "Henry Ian Cusick",
+      "Michael Emerson",
+      "Ian Somerhalder"
+    ],
+    "poster": "https://resizing.flixster.com/CA77ZPgmjGchl4T-AAI54X9ePtg=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p185013_b_v8_af.jpg"
   }
 ]
